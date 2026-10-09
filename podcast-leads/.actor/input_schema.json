@@ -9,7 +9,8 @@
       "editor": "stringList",
       "description": "Topics to search on Apple Podcasts, e.g. 'saas marketing', 'true crime'.",
       "prefill": [
-        "saas marketing"
+        "marketing",
+        "entrepreneur"
       ]
     },
     "country": {
@@ -44,8 +45,8 @@
       "title": "Active = published within (days)",
       "type": "integer",
       "minimum": 1,
-      "default": 90,
-      "description": "A show counts as active if it published an episode within this many days."
+      "default": 120,
+      "description": "A show counts as active if it published an episode within this many days. Raise it for niche topics where shows post less often."
     },
     "minEpisodes": {
       "title": "Minimum episodes",

@@ -10,7 +10,7 @@ const {
     maxResultsPerKeyword = 50,
     maxResults = 200,
     onlyActive = true,
-    activeDays = 90,
+    activeDays = 120,
     minEpisodes = 5,
     requireEmail = true,
     checkWebsites = true,
@@ -21,18 +21,21 @@ const {
 
 const optOut = new Set(excludeEmails.map((e) => e.toLowerCase().trim()));
 const seen = new Set();
-const stats = { candidates: 0, feedFailed: 0, inactive: 0, tooFewEpisodes: 0, noEmail: 0, wrongLanguage: 0, emailFromWebsite: 0, saved: 0 };
+const stats = { candidates: 0, feedFailed: 0, feedErrors: {}, inactive: 0, tooFewEpisodes: 0, noEmail: 0, wrongLanguage: 0, emailFromWebsite: 0, saved: 0 };
 let saved = 0;
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
-async function fetchWithRetry(url, { tries = 3, timeoutMs = 20000 } = {}) {
+async function fetchWithRetry(url, { tries = 3, timeoutMs = 25000 } = {}) {
     for (let i = 1; i <= tries; i++) {
         try {
             const res = await fetch(url, {
                 redirect: 'follow',
                 signal: AbortSignal.timeout(timeoutMs),
-                headers: { 'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0 Safari/537.36' },
+                headers: {
+                    'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0 Safari/537.36',
+                    accept: 'application/rss+xml, application/xml, text/xml, text/html;q=0.9, */*;q=0.8',
+                },
             });
             if (res.status === 429 || res.status >= 500) throw new Error(`HTTP ${res.status}`);
             return res;
@@ -80,9 +83,19 @@ async function processShow(r, term) {
         feed = parseFeed(await res.text(), { activeDays });
     } catch (err) {
         stats.feedFailed++;
+        const reason = err.name === 'TimeoutError' ? 'timeout' : err.message.slice(0, 40);
+        stats.feedErrors[reason] = (stats.feedErrors[reason] ?? 0) + 1;
         feed = { feedError: err.message, contactEmails: [] };
     }
     const row = { ...base, ...feed, searchKeyword: term };
+
+    // Apple knows the latest release date and episode count, so use them when the feed can't tell us.
+    const appleLast = Date.parse(base.appleLastReleaseDate ?? '');
+    if (!row.lastEpisodeDate && !Number.isNaN(appleLast)) {
+        row.lastEpisodeDate = new Date(appleLast).toISOString();
+        row.isActive = Date.now() - appleLast <= activeDays * 86400000;
+    }
+    if (!row.episodeCount) row.episodeCount = base.appleEpisodeCount ?? null;
 
     // Cheap filters first, so we only visit websites for shows that could qualify.
     if (onlyActive && !row.isActive) { stats.inactive++; return false; }
