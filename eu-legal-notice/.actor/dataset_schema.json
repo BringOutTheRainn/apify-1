@@ -1,0 +1,37 @@
+{
+  "actorSpecification": 1,
+  "fields": {
+    "type": "object",
+    "properties": {
+      "domain": { "type": "string" },
+      "legalNoticeUrl": { "type": ["string", "null"] },
+      "legalName": { "type": ["string", "null"] },
+      "country": { "type": ["string", "null"] },
+      "registrationIds": { "type": ["object", "null"] },
+      "vatIds": { "type": ["array", "null"], "items": { "type": "string" } },
+      "shareCapital": { "type": ["string", "null"] },
+      "emails": { "type": ["array", "null"], "items": { "type": "string" } },
+      "hasLegalData": { "type": ["boolean", "null"] },
+      "error": { "type": ["string", "null"] }
+    }
+  },
+  "views": {
+    "overview": {
+      "title": "Companies",
+      "transformation": { "fields": ["domain", "legalName", "country", "registrationIds", "vatIds", "shareCapital", "emails", "legalNoticeUrl"] },
+      "display": {
+        "component": "table",
+        "properties": {
+          "domain": { "label": "Website", "format": "link" },
+          "legalName": { "label": "Legal name" },
+          "country": { "label": "Country" },
+          "registrationIds": { "label": "Registration IDs", "format": "object" },
+          "vatIds": { "label": "VAT IDs", "format": "array" },
+          "shareCapital": { "label": "Share capital" },
+          "emails": { "label": "Emails", "format": "array" },
+          "legalNoticeUrl": { "label": "Legal page", "format": "link" }
+        }
+      }
+    }
+  }
+}

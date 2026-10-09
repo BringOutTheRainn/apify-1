@@ -1,0 +1,12 @@
+{
+  "actorSpecification": 1,
+  "name": "eu-legal-notice",
+  "title": "EU Company Legal Info Extractor (SIREN, P.IVA, CIF, KvK, VAT)",
+  "description": "Give it a list of company websites and get back the legal entity name, registration number (SIREN/SIRET, Partita IVA, CIF/NIF, KvK, KBO, NIP/KRS, UK company number, HRB), VAT ID, share capital and email from the site's legal-notice page. Pay only when data is found.",
+  "version": "0.1",
+  "buildTag": "latest",
+  "input": "./input_schema.json",
+  "dockerfile": "./Dockerfile",
+  "storages": { "dataset": "./dataset_schema.json" },
+  "output": "./output_schema.json"
+}
