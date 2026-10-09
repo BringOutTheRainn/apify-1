@@ -8,15 +8,7 @@
   "input": "./input_schema.json",
   "dockerfile": "./Dockerfile",
   "storages": {
-    "dataset": {
-      "actorSpecification": 1,
-      "views": {
-        "overview": {
-          "title": "Leads",
-          "transformation": { "fields": ["title", "ownerName", "ownerEmail", "website", "primaryGenre", "episodeCount", "lastEpisodeDate", "avgDaysBetweenEpisodes", "guestInterviewScore", "appleUrl"] },
-          "display": { "component": "table" }
-        }
-      }
-    }
-  }
+    "dataset": "./dataset_schema.json"
+  },
+  "output": "./output_schema.json"
 }

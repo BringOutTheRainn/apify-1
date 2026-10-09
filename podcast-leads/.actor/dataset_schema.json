@@ -1,0 +1,45 @@
+{
+  "actorSpecification": 1,
+  "fields": {
+    "type": "object",
+    "properties": {
+      "title": { "type": "string" },
+      "author": { "type": ["string", "null"] },
+      "ownerName": { "type": ["string", "null"] },
+      "ownerEmail": { "type": ["string", "null"] },
+      "contactEmails": { "type": "array", "items": { "type": "string" } },
+      "website": { "type": ["string", "null"] },
+      "socialLinks": { "type": "array", "items": { "type": "string" } },
+      "primaryGenre": { "type": ["string", "null"] },
+      "language": { "type": ["string", "null"] },
+      "episodeCount": { "type": ["integer", "null"] },
+      "lastEpisodeDate": { "type": ["string", "null"] },
+      "avgDaysBetweenEpisodes": { "type": ["number", "null"] },
+      "isActive": { "type": ["boolean", "null"] },
+      "guestInterviewScore": { "type": ["number", "null"] },
+      "appleUrl": { "type": ["string", "null"] },
+      "feedUrl": { "type": ["string", "null"] }
+    }
+  },
+  "views": {
+    "overview": {
+      "title": "Leads",
+      "transformation": { "fields": ["title", "ownerName", "ownerEmail", "website", "primaryGenre", "episodeCount", "lastEpisodeDate", "avgDaysBetweenEpisodes", "guestInterviewScore", "appleUrl"] },
+      "display": {
+        "component": "table",
+        "properties": {
+          "title": { "label": "Podcast" },
+          "ownerName": { "label": "Owner" },
+          "ownerEmail": { "label": "Email" },
+          "website": { "label": "Website", "format": "link" },
+          "primaryGenre": { "label": "Genre" },
+          "episodeCount": { "label": "Episodes", "format": "number" },
+          "lastEpisodeDate": { "label": "Last episode", "format": "date" },
+          "avgDaysBetweenEpisodes": { "label": "Days between episodes", "format": "number" },
+          "guestInterviewScore": { "label": "Guest score", "format": "number" },
+          "appleUrl": { "label": "Apple link", "format": "link" }
+        }
+      }
+    }
+  }
+}
