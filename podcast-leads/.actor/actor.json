@@ -1,0 +1,22 @@
+{
+  "actorSpecification": 1,
+  "name": "podcast-leads",
+  "title": "Podcast Leads Finder (Host Emails & Activity)",
+  "description": "Find active podcasts by keyword with owner contact emails, website, social links, episode frequency and a guest-interview score. Built for podcast guesting and sponsorship outreach.",
+  "version": "0.1",
+  "buildTag": "latest",
+  "input": "./input_schema.json",
+  "dockerfile": "./Dockerfile",
+  "storages": {
+    "dataset": {
+      "actorSpecification": 1,
+      "views": {
+        "overview": {
+          "title": "Leads",
+          "transformation": { "fields": ["title", "ownerName", "ownerEmail", "website", "primaryGenre", "episodeCount", "lastEpisodeDate", "avgDaysBetweenEpisodes", "guestInterviewScore", "appleUrl"] },
+          "display": { "component": "table" }
+        }
+      }
+    }
+  }
+}

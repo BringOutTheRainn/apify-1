@@ -1,0 +1,18 @@
+{
+  "title": "Podcast Leads Finder input",
+  "type": "object",
+  "schemaVersion": 1,
+  "properties": {
+    "keywords": { "title": "Keywords", "type": "array", "editor": "stringList", "description": "Topics to search on Apple Podcasts, e.g. 'saas marketing', 'true crime'.", "prefill": ["saas marketing"] },
+    "country": { "title": "Apple Podcasts country", "type": "string", "editor": "textfield", "description": "Two-letter store country code.", "default": "US" },
+    "maxResultsPerKeyword": { "title": "Max podcasts per keyword", "type": "integer", "minimum": 1, "maximum": 200, "default": 50 },
+    "maxResults": { "title": "Max podcasts in total", "type": "integer", "minimum": 1, "default": 200, "description": "Hard cap so you never pay for more than you want." },
+    "onlyActive": { "title": "Only active shows", "type": "boolean", "default": true, "description": "Skip shows with no episode in the last N days." },
+    "activeDays": { "title": "Active = published within (days)", "type": "integer", "minimum": 1, "default": 90 },
+    "minEpisodes": { "title": "Minimum episodes", "type": "integer", "minimum": 0, "default": 5 },
+    "requireEmail": { "title": "Only shows with a contact email", "type": "boolean", "default": true },
+    "language": { "title": "Language filter", "type": "string", "editor": "textfield", "description": "Optional, e.g. 'en'. Matches the feed's language tag." },
+    "excludeEmails": { "title": "Opt-out list", "type": "array", "editor": "stringList", "description": "Emails to never return (e.g. people who asked not to be contacted)." }
+  },
+  "required": ["keywords"]
+}
