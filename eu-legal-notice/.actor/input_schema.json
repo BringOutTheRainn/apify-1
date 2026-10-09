@@ -3,10 +3,47 @@
   "type": "object",
   "schemaVersion": 1,
   "properties": {
-    "domains": { "title": "Websites or domains", "type": "array", "editor": "stringList", "description": "Company websites to check, one per line, e.g. 'boulangerie-dupont.fr' or 'https://www.rossi.it'.", "prefill": ["decathlon.fr", "bol.com", "elcorteingles.es"] },
-    "includeNoData": { "title": "Also return sites with no legal data", "type": "boolean", "default": false, "description": "When on, sites where nothing was found are also listed, free of charge, with an error or empty fields." },
-    "maxConcurrency": { "title": "Max concurrency", "type": "integer", "minimum": 1, "maximum": 50, "default": 10, "description": "How many websites to check in parallel." },
-    "timeoutSecs": { "title": "Page timeout (seconds)", "type": "integer", "minimum": 5, "maximum": 60, "default": 20, "description": "Give up on a page after this many seconds." }
+    "domains": {
+      "title": "Websites or domains",
+      "type": "array",
+      "editor": "stringList",
+      "description": "Company websites to check, one per line, e.g. 'boulangerie-dupont.fr' or 'https://www.rossi.it'.",
+      "prefill": [
+        "ovhcloud.com",
+        "aruba.it",
+        "coolblue.nl"
+      ]
+    },
+    "includeNoData": {
+      "title": "Also return sites with no legal data",
+      "type": "boolean",
+      "default": true,
+      "description": "When on, sites where nothing was found are also listed, free of charge, with an error or empty fields."
+    },
+    "maxConcurrency": {
+      "title": "Max concurrency",
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 50,
+      "default": 10,
+      "description": "How many websites to check in parallel."
+    },
+    "timeoutSecs": {
+      "title": "Page timeout (seconds)",
+      "type": "integer",
+      "minimum": 5,
+      "maximum": 60,
+      "default": 20,
+      "description": "Give up on a page after this many seconds."
+    },
+    "useProxy": {
+      "title": "Retry blocked sites through Apify Proxy",
+      "type": "boolean",
+      "default": true,
+      "description": "If a website blocks the first request, try again through Apify Proxy. Recommended."
+    }
   },
-  "required": ["domains"]
+  "required": [
+    "domains"
+  ]
 }
