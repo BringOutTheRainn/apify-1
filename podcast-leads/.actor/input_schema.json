@@ -60,6 +60,12 @@
       "default": true,
       "description": "Only return shows whose feed or description lists a contact email. Turn off to also get shows without one (charged at the lower rate)."
     },
+    "checkWebsites": {
+      "title": "Look up emails on show websites",
+      "type": "boolean",
+      "default": true,
+      "description": "Many feeds hide their email. When on, the Actor also checks the show's own website (home, contact and about pages) for a contact email."
+    },
     "language": {
       "title": "Language filter",
       "type": "string",
@@ -71,6 +77,14 @@
       "type": "array",
       "editor": "stringList",
       "description": "Emails to never return (e.g. people who asked not to be contacted)."
+    },
+    "maxConcurrency": {
+      "title": "Max concurrency",
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 20,
+      "default": 8,
+      "description": "How many shows to check in parallel."
     }
   },
   "required": [

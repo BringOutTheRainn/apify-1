@@ -12,7 +12,7 @@ const text = (v) => {
     return s == null ? null : String(s).trim() || null;
 };
 
-export function itunesSearchUrl({ term, country = 'US', limit = 200, genreId }) {
+export function itunesSearchUrl({ term, country = 'US', limit = 200, genreId, attribute }) {
     const u = new URL('https://itunes.apple.com/search');
     u.searchParams.set('term', term);
     u.searchParams.set('media', 'podcast');
@@ -20,6 +20,7 @@ export function itunesSearchUrl({ term, country = 'US', limit = 200, genreId }) 
     u.searchParams.set('country', country);
     u.searchParams.set('limit', String(Math.min(limit, 200)));
     if (genreId) u.searchParams.set('genreId', String(genreId));
+    if (attribute) u.searchParams.set('attribute', attribute);
     return u.toString();
 }
 
@@ -92,3 +93,26 @@ export function passesFilters(row, { onlyActive, minEpisodes = 0, requireEmail, 
     if (language && row.language && !row.language.toLowerCase().startsWith(language.toLowerCase())) return false;
     return true;
 }
+
+const JUNK_EMAIL_RE = /(example\.|sentry|wixpress|godaddy|domain\.com|email\.com|yourdomain|@2x|\.(png|jpe?g|gif|webp|svg)$|noreply|no-reply|privacy@|abuse@|dmca@)/i;
+
+/** Pulls plausible contact emails out of an HTML page (mailto links first, then visible text). */
+export function emailsFromHtml(html) {
+    const out = new Set();
+    for (const m of html.matchAll(/mailto:([^"'?>\s]+)/gi)) {
+        try { out.add(decodeURIComponent(m[1]).toLowerCase()); } catch { /* bad encoding */ }
+    }
+    const text = html.replace(/<script[\s\S]*?<\/script>|<style[\s\S]*?<\/style>/gi, ' ').replace(/<[^>]+>/g, ' ');
+    for (const m of text.match(EMAIL_RE) ?? []) out.add(m.toLowerCase());
+    return [...out].filter((e) => /^[^@\s]+@[^@\s]+\.[a-z]{2,}$/.test(e) && !JUNK_EMAIL_RE.test(e));
+}
+
+/** Contact-page URLs worth checking on a show's website. */
+export function contactPageUrls(website) {
+    let base;
+    try { base = new URL(website); } catch { return []; }
+    if (/(apple|spotify|anchor|podbean|buzzsprout|libsyn|simplecast|megaphone|omny|iheart|soundcloud|youtube|transistor|captivate|acast|spreaker)\./i.test(base.hostname)) return [];
+    return [base.origin + '/', `${base.origin}/contact`, `${base.origin}/contact-us`, `${base.origin}/about`];
+}
+
+export const SEARCH_ATTRIBUTES = [null, 'descriptionTerm', 'keywordsTerm'];
